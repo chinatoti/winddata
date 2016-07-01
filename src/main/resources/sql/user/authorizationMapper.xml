@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sumscope.optimus.mapper.user.AuthorizationMapper">
+    <select id="cdcCompanyAuthorization" resultType="java.util.HashMap">
+        select * from idb_cdc_company where company_id='${companyId}' and `enable` = 1 and `status` = 1
+    </select>
+
+    <select id="cdcAccountAuthorization" resultType="java.util.HashMap">
+        select * from idb_cdc_account where account_id='${userId}' and `enable`=1 and `status`=1
+    </select>
+
+    <select id="brokerAuthorization" resultType="java.util.HashMap">
+        /*SELECT name, code FROM idb_center.idb_financial_company where id in
+        (
+            SELECT company_id FROM idb_center.idb_business_allow where id in
+            (
+                SELECT a.business_allow_id FROM (select * from idb_center.idb_company_business where financial_company_id = '${companyId}' and status = '1') a
+                inner join
+                (SELECT * FROM idb_center.idb_account_business
+                where account_id = '${userId}' and status = '1') b
+                on a.business_allow_id = b.business_allow_id and (
+                ( a.broker_company_app_status = '1' and b.account_app_status = '1' and b.broker_company_app_status = '1' ) or
+                ( a.broker_company_app_status = '1' and b.account_app_status = '1' and b.broker_company_app_status = '0' ) or
+                ( a.broker_company_app_status = '0' and b.account_app_status = '1' and b.broker_company_app_status = '1' ) or
+                ( a.broker_company_app_status is null and b.account_app_status = '1' and b.broker_company_app_status = '1' )
+                )
+            ) and business_code = 'BOND' and status = '1'
+        )*/
+
+        /*select c.`name`,c.`code` from idb_center.idb_company c where c.id in(
+        SELECT 
+                ct.COMPANY_ID
+        FROM
+                idb_center.idb_company_business c 
+                        left JOIN
+                    idb_center.idb_account_business t ON t.account_id = '${userId}'
+                 left join idb_center.idb_business_allow ct on t.business_allow_id=ct.id and ct.business_code = 'BOND' and ct.status=1
+                 left join idb_center.idb_business_allow ca on c.business_allow_id=ca.id and ca.business_code = 'BOND' and ca.status=1
+                        AND ca.business_id = ct.business_id and ca.COMPANY_ID=ct.COMPANY_ID
+        WHERE
+                (c.financial_company_id = '${companyId}' or c.financial_company_id is null)
+                and ct.business_code='BOND'
+                and t.account_app_status=1
+                and(c.broker_company_app_status=0 or c.broker_company_app_status=1 or c.broker_company_app_status is null)
+                and (t.broker_company_app_status=0 or t.broker_company_app_status=1)
+                and (c.broker_company_app_status=1 or t.broker_company_app_status=1))*/
+
+        /*select c.`name`,c.`code` from idb_center.idb_company c where c.id in(
+            SELECT
+            ct.COMPANY_ID
+            FROM
+            idb_account a
+            LEFT JOIN
+            idb_company_business c ON a.company_id = c.financial_company_id
+
+            left JOIN
+            idb_account_business t ON a.id = t.account_id
+
+            left join idb_business_allow ct on t.business_allow_id=ct.id and ct.business_code = 'BOND' and ct.status=1
+            left join idb_business_allow ca on c.business_allow_id=ca.id and ca.business_code = 'BOND' and ca.status=1
+            AND ca.business_id = ct.business_id and ca.COMPANY_ID=ct.COMPANY_ID
+            WHERE
+            a.USERNAME = '${username}'
+            and ct.business_code='BOND'
+            and t.account_app_status=1
+            and(c.broker_company_app_status=0 or c.broker_company_app_status=1 or c.broker_company_app_status is null)
+            and(c.broker_company_app_status != -1)
+            and (t.broker_company_app_status=0 or t.broker_company_app_status=1)
+            and (c.broker_company_app_status=1 or t.broker_company_app_status=1)
+        ) order by rand();*/
+
+        select c.`name`,c.`code` from idb_center.idb_company c where CONVERT(   CONVERT(c.id,SIGNED   ),CHAR) in(
+            SELECT
+            ct.COMPANY_ID
+            FROM
+            idb_account a
+            LEFT JOIN
+            idb_company_business c ON a.company_id = c.financial_company_id
+
+            left JOIN
+            idb_account_business t ON a.id = t.account_id
+
+            left join idb_business_allow ct on t.business_allow_id=ct.id and ct.business_code = 'BOND' and ct.status=1
+            left join idb_business_allow ca on c.business_allow_id=ca.id and ca.business_code = 'BOND' and ca.status=1
+            AND ca.business_id = ct.business_id and ca.COMPANY_ID=ct.COMPANY_ID
+            WHERE
+            a.USERNAME = '${username}'
+            and ct.business_code='BOND'
+            and t.account_app_status=1
+            and(c.broker_company_app_status=0 or c.broker_company_app_status=1 or c.broker_company_app_status is null)
+            and(c.broker_company_app_status != -1)
+            and (t.broker_company_app_status=0 or t.broker_company_app_status=1)
+            and (c.broker_company_app_status=1 or t.broker_company_app_status=1)
+        ) order by rand();
+    </select>
+
+    <select id="functionAuthorization" resultType="java.util.HashMap">
+        SELECT a.permission_code,a.value FROM idb_permission a, idb_account b WHERE a.account_id = b.id and a.status = 1 and USERNAME = '${username}';
+    </select>
+
+    <select id="ipMacAuthorization" resultType="java.util.HashMap">
+        SELECT * from idb_account_ip a, idb_account b ,idb_account_limit c
+        where a.ACCOUNT_ID = b.ID and b.USERNAME = '${username}'
+        and c.ACCOUNT_ID = b.ID and c.IP_USING = 1 and a.IP is not null and a.IP != '' and a.status =1;
+    </select>
+</mapper>

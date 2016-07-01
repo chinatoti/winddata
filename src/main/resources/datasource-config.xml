@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<import resource="qpid-config.xml" />
+    <import resource="um-config.xml" />-->
+
+    <bean id="userDS" class="org.apache.commons.dbcp2.BasicDataSource" primary="false" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${spring.userDS.url}" />
+        <property name="username" value="${spring.userDS.username}" />
+        <property name="password" value="${spring.userDS.password}" />
+
+
+        <property name="maxTotal" value="300" />
+        <property name="initialSize" value="100" />
+        <property name="maxWaitMillis" value="60000" />
+        <property name="minIdle" value="1" />
+
+        <property name="timeBetweenEvictionRunsMillis" value="3000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="removeAbandonedOnBorrow" value="true" />
+        <property name="removeAbandonedTimeout" value="120" />
+    </bean>
+
+    <bean id="userSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="userDS" />
+        <property name="configLocation">
+            <value>classpath:sql/user-config.xml</value>
+        </property>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:sql/user/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="userSqlSessionTemplate" name="userSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="userSqlSessionFactory" />
+    </bean>
+
+    <bean id="authorizationMapper" class="com.sumscope.optimus.privilege.mapper.user.AuthorizationMapper">
+        <property name="userSqlSessionTemplate" ref="userSqlSessionTemplate"></property>
+    </bean>
+</beans>
