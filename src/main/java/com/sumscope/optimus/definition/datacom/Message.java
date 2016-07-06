@@ -7,8 +7,8 @@ import java.nio.ByteOrder;
  * Created by wenshuai.li on 2016/6/30.
  */
 public class Message {
-    public static ByteBuffer buffer = ByteBuffer.allocate(Data.MAX_MSG_SIZE);
-    public static ByteBuffer buffer1 = ByteBuffer.allocate(Data.MAX_MSG_SIZE);
+    public ByteBuffer buffer = ByteBuffer.allocate(256);
+    public ByteBuffer buffer1 = ByteBuffer.allocate(256);
 
     private Header header;
     private Fields fields;
@@ -18,19 +18,17 @@ public class Message {
         this.header = header;
         this.fields = fields;
         this.rows = rows;
+
+        buffer = ByteBuffer.allocate(256).order(ByteOrder.BIG_ENDIAN);
+        buffer1 = ByteBuffer.allocate(256).order(ByteOrder.BIG_ENDIAN);
     }
-    public void init(){
-        buffer.clear();
-        buffer1.clear();
-    }
-    public synchronized ByteBuffer pack() throws Exception {
-        init();
-        buffer.order(ByteOrder.BIG_ENDIAN);
+
+    public ByteBuffer pack() throws Exception {
         int size = 0;
         size += fields.pack(buffer);
         size += rows.pack(buffer);
 
-        header.setSize(size + 7);
+        header.setSize(size);
         header.pack(buffer1);
         buffer.flip();
         int count = buffer.remaining();
