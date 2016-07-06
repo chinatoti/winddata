@@ -31,7 +31,7 @@ public class Rows {
 
     public int pack(ByteBuffer buffer) throws Exception {
         int size = 0;
-        size += new Int32(rowCount).encode(buffer).getSize();
+        size += new Int32(getRowCount()).encode(buffer).getSize();
         for(Row row : rowList){
             size += row.pack(buffer);
         }
