@@ -3,6 +3,7 @@ package com.sumscope.optimus.data;
 /**
  * Created by wenshuai.li on 2016/6/29.
  */
+import com.sumscope.optimus.definition.LoginCommand;
 import com.sumscope.optimus.ibroker.IBMsgLogin;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -45,6 +46,7 @@ public class SamplMinaClientHander extends IoHandlerAdapter {
     @Override
     public void messageSent(IoSession arg0, Object arg1) throws Exception {
         System.out.println("messageSent");
+        System.out.println(arg1.toString());
         // TODO Auto-generated method stub
 
     }
@@ -54,47 +56,15 @@ public class SamplMinaClientHander extends IoHandlerAdapter {
      */
     @Override
     public void sessionClosed(IoSession session) throws Exception {
-        System.out.println("one client Disconnect");
-
+        System.out.println("sessionClosed");
     }
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
         System.out.println("sessionCreated");
-        /*short version = 2;
-        byte isCompressed = 0x00;
-        int size = 100;
 
-        short fieldCount = 3;
-
-        String fieldName1 = "CommandID";
-        byte dataType1 = 0x03;
-
-        String fieldName2 = "LoginName";
-        byte dataType2 = 0x07;
-
-        String fieldNam3 = "Password";
-        byte dataType3 = 0x07;
-
-
-        int rowCount = 1;
-
-        int CommandID = 1001;
-        String LoginName = "sump1";
-        String Password = "sump1";
-
-        byte[] aa = new byte[1000];*/
-
-
-        IBMsgLogin aaa = new IBMsgLogin();
-        aaa.setLoginPwd("sump1");
-        aaa.setLoginName("sump1");
-
-        System.out.println("login");
-        WriteFuture writeFuture = session.write(aaa.bytes());
-        writeFuture.await(3, TimeUnit.SECONDS);
-        // TODO Auto-generated method stub
-
+        LoginCommand loginCommand = new LoginCommand((short)2,(byte)0);
+        session.write(loginCommand);
     }
 
     @Override
@@ -109,8 +79,14 @@ public class SamplMinaClientHander extends IoHandlerAdapter {
      */
     @Override
     public void sessionOpened(IoSession session) throws Exception {
-        System.out.println("sessionOpened");
+        /*System.out.println("sessionOpened");
+        IBMsgLogin aaa = new IBMsgLogin();
+        aaa.setLoginPwd("sump1");
+        aaa.setLoginName("sump1");
 
+        System.out.println("login");
+        WriteFuture writeFuture = session.write(aaa.bytes());
+        writeFuture.await(3, TimeUnit.SECONDS);*/
 
     }
 

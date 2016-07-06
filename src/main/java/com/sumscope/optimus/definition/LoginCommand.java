@@ -21,27 +21,28 @@ public class LoginCommand extends Command{
 
     @Override
     public Fields getFields() {
-        Field commandId = new Field("CommandID", new Int32(1001));
-        Field loginName = new Field("LoginName", new com.sumscope.optimus.definition.datatype.String("sum1"));
-        Field password = new Field("Password", new com.sumscope.optimus.definition.datatype.String("sum1"));
+        Field commandId = new Field("CommandID", Data.Type.Int32.value());
+        Field loginName = new Field("LoginName", Data.Type.String.value());
+        Field password = new Field("Password", Data.Type.String.value());
 
         Fields fields = new Fields();
         fields.addField(commandId);
         fields.addField(loginName);
         fields.addField(password);
 
-        rowFields = fields;
         return fields;
     }
 
     @Override
     public Rows getRows() {
         Rows rows = new Rows();
-        List<Field> list = rowFields.getFieldList();
-        for (Field field : list){
-            Row row = new Row(field);
-            rows.addRow(row);
-        }
+
+        Row row = new Row()
+                .addFieldData(new Int32(1001))
+                .addFieldData(new com.sumscope.optimus.definition.datatype.String("sum1"))
+                .addFieldData(new com.sumscope.optimus.definition.datatype.String("sum1"));
+
+        rows.addRow(row);
         return rows;
     }
 

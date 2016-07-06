@@ -15,7 +15,6 @@ public abstract class Command {
     private byte isCompressed = (byte)0;
 
     private Header header;
-    protected Fields rowFields;
 
     public Command(){
         header = new Header(version,isCompressed);

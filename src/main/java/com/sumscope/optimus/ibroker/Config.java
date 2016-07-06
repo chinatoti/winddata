@@ -28,8 +28,13 @@ public class Config {
 		m_config = config;
 		
 		try {
-			m_in = getClass().getClassLoader().getResourceAsStream(m_config);
-			m_prop.load(m_in);			
+			/*m_in = getClass().getClassLoader().getResourceAsStream(m_config);
+			m_prop.load(m_in);*/
+			m_prop.setProperty("IP","114.80.168.110");
+			m_prop.setProperty("PORT","60001");
+			m_prop.setProperty("USER","sump1");
+			m_prop.setProperty("PASSWORD","sump1");
+			m_prop.setProperty("WRAPPER","1");
 			m_settlement_date = m_settlement_date_formater.format(new Date());
 			m_readonly = readonly;
 			m_isOK = true;

@@ -437,10 +437,19 @@ public final class IBGateway {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Config config = new Config("icap.properties",true);
 
 		IBGateway ibGateway = new IBGateway(config);
-		ibGateway.ib_send(IBMsg.IB_FUNC.LOGIN);
+		ibGateway.start(new IBMsgListener(){
+
+			@Override
+			public void onMsg(IBMsgResponse msg) {
+
+				System.out.println(msg.getCommandId());
+
+			}
+		});
+		ibGateway.ib_send(IBMsg.IB_FUNC.SUBSCRIBE_QUOTE);
 	}
 }
