@@ -32,7 +32,7 @@ public abstract class Command {
         this.header = header;
     }
 
-    protected abstract Fields getFields();
-    protected abstract Rows getRows();
-    protected abstract ByteBuffer pack() throws Exception;
+    public abstract Fields getFields();
+    public abstract Rows getRows();
+    public abstract ByteBuffer pack() throws Exception;
 }
