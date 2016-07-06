@@ -20,7 +20,7 @@ public class LoginCommand extends Command{
     }
 
     @Override
-    protected Fields getFields() {
+    public Fields getFields() {
         Field commandId = new Field("CommandID", new Int32(1001));
         Field loginName = new Field("LoginName", new com.sumscope.optimus.definition.datatype.String("sum1"));
         Field password = new Field("Password", new com.sumscope.optimus.definition.datatype.String("sum1"));
@@ -35,7 +35,7 @@ public class LoginCommand extends Command{
     }
 
     @Override
-    protected Rows getRows() {
+    public Rows getRows() {
         Rows rows = new Rows();
         List<Field> list = rowFields.getFieldList();
         for (Field field : list){
