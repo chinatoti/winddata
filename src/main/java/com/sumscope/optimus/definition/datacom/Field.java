@@ -9,18 +9,11 @@ import java.nio.ByteBuffer;
 public class Field {
     private String fieldName;
     private byte dataType;
-    private Data data;
 
-    public Field(String fieldName,Data data){
-        this.fieldName = fieldName;
-        this.data = data;
-    }
 
-    @Deprecated
-    public Field(String fieldName,byte dataType,Data data){
+    public Field(String fieldName,byte dataType){
         this.fieldName = fieldName;
         this.dataType = dataType;
-        this.data = data;
     }
 
     public String getFieldName() {
@@ -39,18 +32,10 @@ public class Field {
         this.dataType = dataType;
     }
 
-    public Data getData() {
-        return data;
-    }
-
-    public void setData(Data data) {
-        this.data = data;
-    }
-
     public int pack(ByteBuffer buffer) throws UnsupportedEncodingException {
         int size = 0;
         size += new com.sumscope.optimus.definition.datatype.String(fieldName).encode(buffer).getSize();
-        size += new com.sumscope.optimus.definition.datatype.Byte(data.getEncodeType()).encode(buffer).getSize();
+        size += new com.sumscope.optimus.definition.datatype.Byte(dataType).encode(buffer).getSize();
         return size;
     }
 }
