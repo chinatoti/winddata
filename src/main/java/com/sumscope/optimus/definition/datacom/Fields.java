@@ -23,7 +23,6 @@ public class Fields {
     }
     public void addField(Field field){
         fieldList.add(field);
-        fieldCount = (short) fieldList.size();
     }
 
     public short getFieldCount() {
@@ -41,7 +40,7 @@ public class Fields {
 
     public int pack(ByteBuffer buffer) throws UnsupportedEncodingException {
         int size = 0;
-        size += new Int16(fieldCount).encode(buffer).getSize();
+        size += new Int16(getFieldCount()).encode(buffer).getSize();
         for (Field f : fieldList){
             size += f.pack(buffer);
         }
