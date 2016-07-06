@@ -23,6 +23,7 @@ public class Fields {
     }
     public void addField(Field field){
         fieldList.add(field);
+        fieldCount = (short) fieldList.size();
     }
 
     public short getFieldCount() {
