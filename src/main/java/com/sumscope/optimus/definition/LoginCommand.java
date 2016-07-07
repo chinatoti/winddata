@@ -46,10 +46,4 @@ public class LoginCommand extends Command{
         return rows;
     }
 
-    @Override
-    public ByteBuffer pack() throws Exception {
-        Message message = new Message(getHeader(),getFields(),getRows());
-        return message.pack();
-    }
-
 }
