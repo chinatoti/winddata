@@ -28,4 +28,10 @@ public class Int16 extends Data {
         buffer.putShort(data);
         return this;
     }
+
+    @Override
+    public Data decode(ByteBuffer buffer) throws Exception {
+        data = buffer.getShort();
+        return this;
+    }
 }

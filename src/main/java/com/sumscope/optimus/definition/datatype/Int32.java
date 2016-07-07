@@ -21,4 +21,10 @@ public class Int32 extends Data {
         buffer.putInt(data);
         return this;
     }
+
+    @Override
+    public Data decode(ByteBuffer buffer) throws Exception {
+        this.data = buffer.getInt();
+        return this;
+    }
 }

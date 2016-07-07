@@ -26,6 +26,7 @@ public abstract class Data {
         }
     }
     public abstract Data encode(ByteBuffer buffer) throws Exception;
+    public abstract Data decode(ByteBuffer buffer) throws Exception;
 
     public byte getEncodeType() {
         return encodeType;

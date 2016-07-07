@@ -38,4 +38,8 @@ public class Message {
         }
         return buffer1;
     }
+
+    public void unpack(ByteBuffer buffer) throws Exception {
+
+    }
 }

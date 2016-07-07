@@ -17,6 +17,10 @@ public class Fields {
     public Fields(){
 
     }
+
+    public Fields(short fieldCount){
+        this.fieldCount = fieldCount;
+    }
     public Fields(short fieldCount,List<Field> fieldList){
         this.fieldCount = fieldCount;
         this.fieldList = fieldList;
@@ -45,5 +49,17 @@ public class Fields {
             size += f.pack(buffer);
         }
         return size;
+    }
+
+    public Fields unpack(ByteBuffer buffer) throws Exception {
+        this.fieldCount = buffer.getShort();
+        for (int i=0;i<fieldCount;i++){
+
+            com.sumscope.optimus.definition.datatype.String f
+                    = new com.sumscope.optimus.definition.datatype.String().decode(buffer);
+            Field field = new Field(f.getData(),f.getEncodeType());
+            fieldList.add(field);
+        }
+        return this;
     }
 }

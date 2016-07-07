@@ -23,4 +23,10 @@ public class Bool extends Data {
         buffer.put(value);
         return this;
     }
+
+    @Override
+    public Data decode(ByteBuffer buffer) throws Exception {
+        data = buffer.get() == (byte)1? true:false;
+        return this;
+    }
 }

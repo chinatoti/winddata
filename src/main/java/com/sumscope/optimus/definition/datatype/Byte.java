@@ -21,4 +21,10 @@ public class Byte extends Data {
         buffer.put(value);
         return this;
     }
+
+    @Override
+    public Data decode(ByteBuffer buffer) throws Exception {
+        data = buffer.get();
+        return this;
+    }
 }

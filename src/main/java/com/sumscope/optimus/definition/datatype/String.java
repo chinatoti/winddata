@@ -11,9 +11,13 @@ import java.nio.ByteBuffer;
 public class String extends Data {
     private java.lang.String data;
 
+    public String(){
+        encodeType = Type.String.value();
+    }
+
     public String(java.lang.String data){
         this.data = data;
-        setEncodeType(Type.String.value());
+        encodeType = Type.String.value();
     }
 
     @Override
@@ -22,6 +26,22 @@ public class String extends Data {
         buffer.putShort((short)value.length);
         buffer.put(value);
         setSize(2 + value.length);
+        return this;
+    }
+
+    public java.lang.String getData() {
+        return data;
+    }
+
+    public void setData(java.lang.String data) {
+        this.data = data;
+    }
+
+    public String decode(ByteBuffer buffer) throws UnsupportedEncodingException {
+        short length = buffer.getShort();
+        byte[] bb = new byte[length];
+        buffer.get(bb,0,length);
+        this.data = new java.lang.String(bb);
         return this;
     }
 }

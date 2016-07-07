@@ -14,6 +14,9 @@ public class Header {
     private byte isCompressed;
     private int size;
 
+    public Header(){
+
+    }
     public Header(short version,byte isCompressed){
         this.version = version;
         this.isCompressed = isCompressed;
@@ -23,6 +26,7 @@ public class Header {
         this.isCompressed = isCompressed;
         this.size = size;
     }
+
     public short getVersion() {
         return version;
     }
@@ -51,5 +55,12 @@ public class Header {
         new Int16(version).encode(buffer);
         new Byte(isCompressed).encode(buffer);
         new Int32(size).encode(buffer);
+    }
+
+    public Header unpack(ByteBuffer buffer){
+        setVersion(buffer.getShort());
+        setIsCompressed(buffer.get());
+        setSize(buffer.getInt());
+        return this;
     }
 }
